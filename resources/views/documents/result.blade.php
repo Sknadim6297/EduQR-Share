@@ -1,0 +1,25 @@
+@extends('layouts.app')
+
+@section('title', 'Share your document · School QR Share')
+
+@section('content')
+    <main class="mx-auto max-w-6xl space-y-7">
+        <a class="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-indigo-700" href="{{ route('documents.index') }}"><span aria-hidden="true">←</span> Back to documents</a>
+        <section class="flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><p class="text-xs font-bold uppercase tracking-[0.12em] text-emerald-700">Your share is ready</p><h1 class="mt-2 font-display text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">Ready for the next scan.</h1><p class="mt-2 max-w-2xl text-sm leading-6 text-slate-600">{{ $document->title }} is ready to share. The link and QR code stay the same if you replace this file.</p></div><a href="{{ route('share.show', $document->public_token) }}" target="_blank" rel="noopener" class="text-sm font-semibold text-indigo-700 hover:text-indigo-900">Preview student page <span aria-hidden="true">↗</span></a></section>
+        <section class="grid overflow-hidden rounded-xl border border-slate-200 bg-white lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]" aria-label="Document QR code and share link">
+            <div class="flex flex-col items-center justify-center bg-slate-50 p-6 sm:p-9">
+                <div class="flex w-full max-w-[390px] items-center justify-between text-[11px] font-bold uppercase tracking-wide text-slate-500"><span>Scan to open</span><span>High-resolution PNG</span></div>
+                <img class="my-5 aspect-square w-full max-w-[390px] rounded-lg border border-slate-200 bg-white p-3 shadow-sm" src="{{ route('documents.qr', $document) }}" alt="QR code linking to {{ $document->title }}">
+                <a class="mb-3 text-sm font-semibold text-indigo-700 hover:text-indigo-900" href="{{ route('documents.qr.download', $document) }}" download data-qr-download-link>Download QR image <span aria-hidden="true">↓</span></a>
+                <a class="inline-flex min-h-11 w-full max-w-[390px] items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-indigo-700" href="{{ route('documents.qr.download', $document) }}">Download QR code <span aria-hidden="true">↓</span></a>
+            </div>
+            <div class="flex flex-col justify-center p-6 sm:p-9 lg:p-11">
+                <p class="text-xs font-bold uppercase tracking-[0.12em] text-indigo-600">Public document link</p><h2 class="mt-2 font-display text-2xl font-bold tracking-tight text-slate-950">One link for every student.</h2><p class="mt-3 text-sm leading-6 text-slate-600">Anyone with this link can preview or download the document. It cannot be used to change or remove it.</p>
+                <div class="mt-6 flex min-h-12 overflow-hidden rounded-lg border border-slate-300 bg-slate-50"><label class="sr-only" for="share-link">Public document link</label><input class="min-w-0 flex-1 border-0 bg-transparent px-3 text-xs text-slate-700 outline-none sm:text-sm" id="share-link" type="text" readonly value="{{ $shareUrl }}" data-share-url><button class="border-l border-slate-300 bg-white px-4 text-sm font-semibold text-indigo-700 hover:bg-indigo-50" type="button" data-copy-link>Copy</button></div>
+                <div class="mt-3 flex flex-wrap gap-2"><button class="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg bg-indigo-600 px-4 text-sm font-semibold text-white hover:bg-indigo-700" type="button" data-copy-link>Copy link</button><button class="inline-flex min-h-10 items-center justify-center gap-2 rounded-lg border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:cursor-wait disabled:opacity-60" type="button" data-native-share data-share-title="{{ $document->title }}" data-share-url="{{ $shareUrl }}" data-qr-url="{{ route('documents.qr', $document) }}" data-qr-download-url="{{ route('documents.qr.download', $document) }}" data-qr-filename="schoolqr-document-{{ $document->id }}.png" aria-describedby="share-feedback">Share QR + link <span aria-hidden="true">↗</span></button></div>
+                <p class="mt-2 min-h-5 text-sm text-emerald-700" id="share-feedback" data-share-feedback aria-live="polite"></p>
+                <div class="mt-5 border-t border-slate-100 pt-5"><p class="text-xs font-bold uppercase tracking-wide text-slate-500">Shared file</p><p class="mt-2 truncate text-sm font-semibold text-slate-900">{{ $document->title }}</p><p class="mt-1 truncate text-xs text-slate-500">{{ $document->original_filename }} <span class="px-1 text-slate-300">·</span> {{ number_format($document->file_size / 1048576, 2) }} MB</p></div>
+            </div>
+        </section>
+    </main>
+@endsection

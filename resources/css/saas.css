@@ -1,0 +1,67 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body.saas-body {
+    min-width: 320px;
+    background: #f8fafc;
+    color: #0f172a;
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+}
+
+.font-display {
+    font-family: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+.saas-sidebar.is-open {
+    transform: translateX(0);
+}
+
+.saas-sidebar-backdrop.is-visible {
+    display: block;
+}
+
+.saas-drop-zone:focus-within {
+    outline: 3px solid #a5b4fc;
+    outline-offset: 4px;
+}
+
+.saas-drop-zone.is-dragging {
+    border-color: #4f46e5;
+    background: #eef2ff;
+}
+
+.saas-public-preview iframe {
+    display: block;
+    width: 100%;
+    min-height: min(76vh, 820px);
+    border: 0;
+    background: #fff;
+}
+
+.saas-public-preview img {
+    display: block;
+    max-width: 100%;
+    max-height: 76vh;
+    margin-inline: auto;
+    object-fit: contain;
+}
+
+@media (max-width: 639px) {
+    .saas-public-preview iframe {
+        min-height: 62vh;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
